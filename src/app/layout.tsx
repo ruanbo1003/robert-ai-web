@@ -7,7 +7,10 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Robert AI",
-  description: "Your SWE tools",
+  description: "Your SWE & AI tools",
+  icons: {
+      icon: '/icon.png'
+  }
 };
 
 
