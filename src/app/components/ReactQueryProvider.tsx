@@ -16,8 +16,7 @@ const ReactQueryProvider = ({ children }: { children: React.ReactNode }) => {
       },
       queryCache: new QueryCache({
          onError: (error, query) => {
-            console.log('queryClient error 2:', error, error?.response?.status, query, typeof error)
-            if(error == 'Unauthorized') {
+            if(error.toString() == 'Unauthorized') {
                router.push('/login')
             }
          }

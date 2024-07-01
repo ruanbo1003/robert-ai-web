@@ -22,7 +22,7 @@ export default function Page() {
                             <div className="flex justify-center text-center">
                                 <img src="/icon.png" className="size-24 rounded-full"></img>
                             </div>
-                            <p className="text-center text-2xl font-bold text-blue-600">Your AI tools</p>
+                            <p className="text-center text-2xl font-bold text-blue-600">Your SWE & AI tools</p>
                         </div>
 
                         {/* form */}

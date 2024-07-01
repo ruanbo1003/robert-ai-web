@@ -8,34 +8,28 @@ export function FetchApi() {
         delete: request('DELETE')
     };
 
-    function request(method) {
-        return async (url, body: any = null) => {
+    function request(method: string) {
+        return async (url: string, body: any = null) => {
             console.log('request:', url, process.env.NEXT_PUBLIC_API_URL)
 
             const apiUrl = process.env.NEXT_PUBLIC_API_URL + url
 
+            const token = null;   // get token from storage
+            const requestHeaders = {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": 'application/json'
+            }
+
             const requestOptions = {
-                method,
-                headers: authHeader(apiUrl),
+                method: method,
+                headers: requestHeaders,
                 body
             };
             if (body) {
-                requestOptions.headers['Content-Type'] = 'application/json';
                 requestOptions.body = JSON.stringify(body);
             }
-            return fetch(apiUrl, requestOptions).then(handleResponse);
-        }
-    }
 
-    // helper functions
-    function authHeader(url) {
-        const token = null;
-        const isLoggedIn = !!token;
-        const isApiUrl = url.startsWith(process.env.REACT_APP_API_URL);
-        if (isLoggedIn && isApiUrl) {
-            return { Authorization: `Bearer ${token}` };
-        } else {
-            return {};
+            return fetch(apiUrl, requestOptions).then(handleResponse);
         }
     }
 
