@@ -11,6 +11,12 @@ export default function Page() {
         redirectTo('/signup');
     };
 
+    const handleLoginBtn = (event) => {
+        event.preventDefault();
+
+        console.log("login")
+    }
+
     return (
         <div>
             <section className="flex justify-center items-center bg-gray-50 min-h-screen">
@@ -48,7 +54,7 @@ export default function Page() {
                                            placeholder="Password">
                                     </Input>
                                 </div>
-                                <button
+                                <button onClick={handleLoginBtn}
                                     className="bg-blue-600 text-white rounded-lg py-2 hover:scale-105 duration-300">Login
                                 </button>
                             </form>

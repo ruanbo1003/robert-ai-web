@@ -9,6 +9,10 @@ export default function Page() {
     const handleLoginBtn = () => {
         redirectTo('/login');
     };
+    const handleSignupBtn = (event) => {
+        event.preventDefault();
+        console.log("signup")
+    }
 
     return (
         <div>
@@ -51,7 +55,7 @@ export default function Page() {
                                     <h2 className="ml-2">Agree to our Terms of Service and Privacy Policy.</h2>
                                 </div>
 
-                                <button
+                                <button onClick={handleSignupBtn}
                                     className="bg-blue-600 text-white rounded-lg py-2 hover:scale-105 duration-300">Sign
                                     Up
                                 </button>
