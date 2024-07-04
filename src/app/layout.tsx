@@ -22,7 +22,9 @@ export default function RootLayout({
   return (
       <ReactQueryProvider>
         <html lang="en">
-        <body className={inter.className}>{children}</body>
+            <body className={inter.className}>
+                <main className="h-screen w-screen">{children}</main>
+            </body>
         </html>
       </ReactQueryProvider>
   );
