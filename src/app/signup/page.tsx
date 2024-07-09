@@ -2,16 +2,83 @@
 
 import {Checkbox} from "@/components/ui/checkbox"
 import { useCustomRedirect } from "@/app/components/RedirectTo"
+import { UserApi, SignupPayload } from "@/api/user"
+import { useRef, useState } from "react"
+import { toast, ToastContainer } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css';
+import { useMutation } from "@tanstack/react-query"
 
 
 export default function Page() {
+    const [payload, setPayload] = useState<SignupPayload>({name: '', password:''});
+
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [password2, setPassword2] = useState('');
+
     const { redirectTo } = useCustomRedirect();
     const handleLoginBtn = () => {
         redirectTo('/login');
     };
-    const handleSignupBtn = (event) => {
+
+    const { mutate: signupFn, isPending: isSignupPending } = useMutation({
+        mutationFn: (data: any) => UserApi().Signup(data),
+        onSuccess: (data) => {
+            console.log('signup success')
+            toast.success('signup success, go to login.', {position: "top-center", autoClose: 1000});
+            redirectTo('/login');
+        },
+        onError: (error) => {
+            console.log('signup failed:', error)
+        }
+    })
+
+    const { mutate: nameExistFn } = useMutation({
+        mutationFn: () => UserApi().NameExist(payload.name),
+        onSuccess: (data) => {
+            if(data.data.exist) {
+                // name exists, do not sign up
+                toast.error('name already exists.', {position: "top-center", autoClose: 1000});
+                return
+            }
+
+            // name not exists, do sign up
+            signupFn(payload)
+        },
+        onError: (error) => {
+            console.log('exist failed:', error)
+        }
+    })
+
+    const nameValueChange = (event) => {
+        setUsername(event.target.value)
+    }
+    const passwordValueChange = (event) => {
+        setPassword(event.target.value)
+    }
+    const password2ValueChange = (event) => {
+        setPassword2(event.target.value)
+    }
+
+    const HandleSignupBtn = (event) => {
         event.preventDefault();
-        console.log("signup")
+
+        if(!username || !password) {
+            toast.error('please enter username and password', {position: "top-center", autoClose: 1000});
+            return
+        }
+        if(password != password2) {
+            toast.error('passwords should be same.', {position: "top-center", autoClose: 1000});
+            return
+        }
+
+        const payload: SignupPayload = {
+            name: username,
+            password: password,
+        }
+        setPayload(payload)
+
+        nameExistFn()
     }
 
     return (
@@ -36,16 +103,16 @@ export default function Page() {
                             <p className="text-sm mt-2 text-gray-600">Please complete to create your account.</p>
 
                             <form action="" className="flex flex-col gap-4">
-                                <input type="text" className="p-2 mt-8 rounded-xl border" name="email"
-                                       placeholder="Username"></input>
+                                <input type="text" className="p-2 mt-8 rounded-xl border" name="username"
+                                       placeholder="Username" onChange={nameValueChange}></input>
                                 <div className="relative">
                                     <input type="text" className="w-full p-2 rounded-xl border" name="password"
-                                           placeholder="password">
+                                           placeholder="password" onChange={passwordValueChange}>
                                     </input>
                                 </div>
                                 <div className="relative">
-                                    <input type="text" className="w-full p-2 rounded-xl border" name="password"
-                                           placeholder="repeat password">
+                                    <input type="text" className="w-full p-2 rounded-xl border" name="password2"
+                                           placeholder="repeat password" onChange={password2ValueChange}>
                                     </input>
                                 </div>
 
@@ -55,7 +122,7 @@ export default function Page() {
                                     <h2 className="ml-2">Agree to our Terms of Service and Privacy Policy.</h2>
                                 </div>
 
-                                <button onClick={handleSignupBtn}
+                                <button onClick={HandleSignupBtn}
                                     className="bg-blue-600 text-white rounded-lg py-2 hover:scale-105 duration-300">Sign
                                     Up
                                 </button>
@@ -80,7 +147,7 @@ export default function Page() {
                 </div>
 
             </section>
+            <ToastContainer />
         </div>
     )
 }
-

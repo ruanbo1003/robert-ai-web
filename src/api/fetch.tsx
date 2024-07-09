@@ -10,7 +10,7 @@ export function FetchApi() {
 
     function request(method: string) {
         return async (url: string, body: any = null) => {
-            console.log('request:', url, process.env.NEXT_PUBLIC_API_URL)
+            console.log('request:', method, url, process.env.NEXT_PUBLIC_API_URL, body)
 
             const apiUrl = process.env.NEXT_PUBLIC_API_URL + url
 
@@ -40,6 +40,8 @@ export function FetchApi() {
             const data = text && JSON.parse(text);
 
             if(response.ok) {
+                console.log('response ok:', data)
+
                 return data;
             } else {
                 if ([401, 403].includes(response.status)) {

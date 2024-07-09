@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ReactQueryProvider from "@/app/components/ReactQueryProvider"
+import { ToastContainer } from "react-toastify";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,12 +21,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-      <ReactQueryProvider>
-        <html lang="en">
-            <body className={inter.className}>
-                <main className="h-screen w-screen">{children}</main>
-            </body>
-        </html>
-      </ReactQueryProvider>
+      <html lang="en">
+      <body className={inter.className}>
+          <ReactQueryProvider>
+              <div>
+                  <ToastContainer />
+                  <div className="h-screen w-screen">
+                      {/*<body className={inter.className}>*/}
+                      {children}
+                  </div>
+              </div>
+              {/*</div>*/}
+          </ReactQueryProvider>
+      </body>
+    </html>
   );
 }

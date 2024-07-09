@@ -3,7 +3,7 @@
 
 * basic
 ```shell
-pnpm add @tanstack/react-query axios
+pnpm add @tanstack/react-query axios react-toastify
 ```
 
 * lucide-react icon
