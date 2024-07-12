@@ -4,9 +4,23 @@
 import { FetchApi } from "@/api/fetch"
 import { useQuery } from "@tanstack/react-query"
 
-export interface SignupPayload {
+
+export interface SignupReq {
     name: string;
     password: string;
+}
+
+export interface SignupResp {
+    exist: boolean
+}
+
+export interface LoginReq {
+    name: string,
+    password: string,
+}
+
+export interface LoginResp {
+    token: string
 }
 
 
@@ -18,16 +32,11 @@ export function UserApi() {
         NameExist,
     }
 
-    function Login() {
-        return useQuery({
-            queryKey: ['use login'],
-            queryFn: () => {
-                return FetchApi().get('/api/user/login')
-            }
-        })
+    function Login(payload: LoginReq) {
+        return FetchApi().post('/api/user/login', payload)
     }
 
-    function Signup(payload: SignupPayload) {
+    function Signup(payload: SignupReq) {
         console.log('Signup payload:', payload)
         return FetchApi().post('/api/user/signup', payload)
     }

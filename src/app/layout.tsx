@@ -24,14 +24,11 @@ export default function RootLayout({
       <html lang="en">
       <body className={inter.className}>
           <ReactQueryProvider>
-              <div>
-                  <ToastContainer />
-                  <div className="h-screen w-screen">
-                      {/*<body className={inter.className}>*/}
-                      {children}
-                  </div>
+              <div className="h-screen w-screen">
+                  {/*<body className={inter.className}>*/}
+                  {children}
               </div>
-              {/*</div>*/}
+              <ToastContainer />
           </ReactQueryProvider>
       </body>
     </html>

@@ -2,7 +2,7 @@
 
 import {Checkbox} from "@/components/ui/checkbox"
 import { useCustomRedirect } from "@/app/components/RedirectTo"
-import { UserApi, SignupPayload } from "@/api/user"
+import { UserApi, SignupReq, SignupResp } from "@/api/user"
 import { useRef, useState } from "react"
 import { toast, ToastContainer } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
@@ -10,11 +10,12 @@ import { useMutation } from "@tanstack/react-query"
 
 
 export default function Page() {
-    const [payload, setPayload] = useState<SignupPayload>({name: '', password:''});
+    const [signupPayload, setSignupPayload] = useState<SignupReq>({
+        name: '',
+        password: '',
+    });
 
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [password2, setPassword2] = useState('');
+    const [repeatedPassword, setRepeatedPassword] = useState('');
 
     const { redirectTo } = useCustomRedirect();
     const handleLoginBtn = () => {
@@ -34,16 +35,16 @@ export default function Page() {
     })
 
     const { mutate: nameExistFn } = useMutation({
-        mutationFn: () => UserApi().NameExist(payload.name),
-        onSuccess: (data) => {
-            if(data.data.exist) {
+        mutationFn: () => UserApi().NameExist(signupPayload.name),
+        onSuccess: (data: SignupResp) => {
+            if(data.exist) {
                 // name exists, do not sign up
                 toast.error('name already exists.', {position: "top-center", autoClose: 1000});
                 return
             }
 
             // name not exists, do sign up
-            signupFn(payload)
+            signupFn(signupPayload)
         },
         onError: (error) => {
             console.log('exist failed:', error)
@@ -51,32 +52,26 @@ export default function Page() {
     })
 
     const nameValueChange = (event) => {
-        setUsername(event.target.value)
+        signupPayload.name = event.target.value
     }
     const passwordValueChange = (event) => {
-        setPassword(event.target.value)
+        signupPayload.password = event.target.value
     }
     const password2ValueChange = (event) => {
-        setPassword2(event.target.value)
+        setRepeatedPassword(event.target.value)
     }
 
     const HandleSignupBtn = (event) => {
         event.preventDefault();
 
-        if(!username || !password) {
+        if(!signupPayload.name || !signupPayload.password) {
             toast.error('please enter username and password', {position: "top-center", autoClose: 1000});
             return
         }
-        if(password != password2) {
+        if(signupPayload.password != repeatedPassword) {
             toast.error('passwords should be same.', {position: "top-center", autoClose: 1000});
             return
         }
-
-        const payload: SignupPayload = {
-            name: username,
-            password: password,
-        }
-        setPayload(payload)
 
         nameExistFn()
     }

@@ -1,6 +1,6 @@
 'use client';
 
-import { QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { useRouter } from 'next/navigation';
 import React from "react"
 
@@ -16,7 +16,17 @@ const ReactQueryProvider = ({ children }: { children: React.ReactNode }) => {
       },
       queryCache: new QueryCache({
          onError: (error, query) => {
+            // console.log('QueryClient-queryCache onError:', error)
             if(error.toString() == 'Unauthorized') {
+               router.push('/login')
+            }
+         }
+      }),
+      mutationCache: new MutationCache({
+         onError: (error) => {
+            // console.log('QueryClient-mutationCache onError:', error)
+            if(error.toString() == 'Unauthorized') {
+               console.log('mutation redirect')
                router.push('/login')
             }
          }

@@ -11,8 +11,10 @@ export function TestApi() {
         Resp,
         Hello,
         InvalidAuth,
+        InvalidAuthUseQuery,
         AxiosInvalidAuth,
         RequestForbidden,
+        GetAnd401,
     }
 
     function Add(name: string) {
@@ -52,6 +54,14 @@ export function TestApi() {
     }
 
     function InvalidAuth() {
+        return FetchApi().get('/api/test/401')
+    }
+
+    function GetAnd401() {
+        return FetchApi().get('/api/test/get_401')
+    }
+
+    function InvalidAuthUseQuery() {
         return useQuery({
             queryKey: ['invalid auth'],
             queryFn: () => {

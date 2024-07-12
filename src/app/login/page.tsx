@@ -1,8 +1,13 @@
 'use client';
 
 import { Input } from "@/components/ui/input"
-import { User, LockKeyhole } from 'lucide-react';
+import { User, LockKeyhole, Cookie } from "lucide-react"
+import { toast } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css';
 import { useCustomRedirect } from "@/app/components/RedirectTo"
+import { useState } from "react"
+import { useMutation } from "@tanstack/react-query"
+import { UserApi, LoginReq, LoginResp } from "@/api/user"
 
 
 export default function Page() {
@@ -11,10 +16,39 @@ export default function Page() {
         redirectTo('/signup');
     };
 
+    const [loginData, setLoginData] = useState<LoginReq>({
+        name: '',
+        password: '',
+    })
+
+    const nameValueChange = (event) => {
+        loginData.name = event.target.value
+    }
+    const passwordValueChange = (event) => {
+        loginData.password = event.target.value
+    }
+
+    const { mutate: loginFn } = useMutation({
+        mutationFn: (payload: LoginReq) => {
+            console.log('login:', payload)
+            return UserApi().Login(payload)
+        },
+        onSuccess: (data: LoginResp) => {
+            localStorage.setItem("authToken", data.token)
+            redirectTo('/home');
+            // toast.success("login success:" + data.token, {position: 'top-center', autoClose: 1000})
+        },
+        onError: (error) => {
+            localStorage.removeItem("authToken")
+            console.log("login failed:", error)
+            toast.error("login failed:" + error.toString(), {position: 'top-center', autoClose: 1000})
+        }
+    })
+
+
     const handleLoginBtn = (event) => {
         event.preventDefault();
-
-        console.log("login")
+        loginFn(loginData)
     }
 
     return (
@@ -43,7 +77,7 @@ export default function Page() {
                                     <User className="ml-1"/>
                                 </span>
                                     <Input type="text" className="w-full pl-10 rounded-xl border bg-white" name="email"
-                                           placeholder="Username"></Input>
+                                           placeholder="Username" onChange={nameValueChange}></Input>
                                 </div>
                                 <div className="relative">
                                 <span className="absolute inset-y-0 left-0 flex items-center pl-2">
@@ -51,7 +85,7 @@ export default function Page() {
                                 </span>
                                     <Input type="text" className="w-full pl-10 rounded-xl border bg-white"
                                            name="password"
-                                           placeholder="Password">
+                                           placeholder="Password" onChange={passwordValueChange}>
                                     </Input>
                                 </div>
                                 <button onClick={handleLoginBtn}
