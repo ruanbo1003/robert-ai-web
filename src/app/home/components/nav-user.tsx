@@ -1,3 +1,5 @@
+'use client';
+
 import {
     DropdownMenu,
     DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
@@ -6,9 +8,33 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useMutation } from "@tanstack/react-query"
+import { UserApi } from "@/api/user"
+import { useCustomRedirect } from "@/app/components/RedirectTo"
 
 
 export default function NavUser() {
+    const { redirectTo } = useCustomRedirect();
+
+    const { mutate: logoutFn } = useMutation({
+        mutationFn: () => {
+            return UserApi().Logout()
+        },
+        onSuccess: (data) => {
+            localStorage.removeItem("authToken")
+            console.log('logout onSuccess')
+            redirectTo('/login');
+        },
+        onError: (error) => {
+            console.log('logout onError')
+        }
+    })
+    const handleLogout = (event) => {
+        event.preventDefault();
+
+        logoutFn()
+    }
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -29,7 +55,7 @@ export default function NavUser() {
                     </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onSelect={handleLogout}>
                     Log out
                     <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
                 </DropdownMenuItem>

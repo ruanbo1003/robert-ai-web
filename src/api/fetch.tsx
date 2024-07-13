@@ -29,7 +29,8 @@ export function FetchApi() {
             const requestOptions = {
                 method: method,
                 headers: requestHeaders,
-                body
+                credentials: 'include' as RequestCredentials,
+                body: null as any
             };
             if (body) {
                 requestOptions.body = JSON.stringify(body);
@@ -40,7 +41,7 @@ export function FetchApi() {
                     if(response.ok) {
                         return response.json()
                     } else {
-                        console.log('response not ok:', response.statusText)
+                        // console.log('response not ok:', response.statusText)
                         return Promise.reject(response.statusText)
                     }
                 }).then(data => {

@@ -8,7 +8,7 @@ pnpm add @tanstack/react-query axios react-toastify
 
 * lucide-react icon
 ```shell
-pnpm add lucide-react
+pnpm add lucide-react zustand
 ```
 
 * shadcn-ui

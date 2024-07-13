@@ -28,12 +28,17 @@ export function UserApi() {
 
     return {
         Login,
+        Logout,
         Signup,
         NameExist,
     }
 
     function Login(payload: LoginReq) {
         return FetchApi().post('/api/user/login', payload)
+    }
+
+    function Logout() {
+        return FetchApi().post('/api/user/logout')
     }
 
     function Signup(payload: SignupReq) {

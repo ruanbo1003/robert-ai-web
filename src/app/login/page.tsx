@@ -1,7 +1,7 @@
 'use client';
 
 import { Input } from "@/components/ui/input"
-import { User, LockKeyhole, Cookie } from "lucide-react"
+import { User, LockKeyhole } from "lucide-react"
 import { toast } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
 import { useCustomRedirect } from "@/app/components/RedirectTo"
@@ -30,7 +30,7 @@ export default function Page() {
 
     const { mutate: loginFn } = useMutation({
         mutationFn: (payload: LoginReq) => {
-            console.log('login:', payload)
+            // console.log('login:', payload)
             return UserApi().Login(payload)
         },
         onSuccess: (data: LoginResp) => {
@@ -40,11 +40,10 @@ export default function Page() {
         },
         onError: (error) => {
             localStorage.removeItem("authToken")
-            console.log("login failed:", error)
+            // console.log("login failed:", error)
             toast.error("login failed:" + error.toString(), {position: 'top-center', autoClose: 1000})
         }
     })
-
 
     const handleLoginBtn = (event) => {
         event.preventDefault();
