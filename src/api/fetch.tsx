@@ -22,7 +22,7 @@ export function FetchApi() {
 
             const authToken = localStorage.getItem("authToken")  // get token from localStorage
             const requestHeaders = {
-                "Authorization": `Bearer ${authToken}`,
+                "Auth-Token": authToken,
                 "Content-Type": 'application/json'
             }
 
