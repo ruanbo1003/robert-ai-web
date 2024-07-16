@@ -24,6 +24,7 @@ COPY . .
 # ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN npm install -g pnpm
+RUN rm -rf .env.local && cp .env.prod .evn.local
 RUN pnpm build
 
 # Production image, copy all the files and run next

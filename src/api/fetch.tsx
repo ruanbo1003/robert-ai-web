@@ -18,18 +18,21 @@ export function FetchApi() {
 
     function request(method: string) {
         return (url: string, body: any = null) => {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL + url
+            let apiUrl = url
+            if(process.env.NEXT_PUBLIC_API_URL) {
+                apiUrl = process.env.NEXT_PUBLIC_API_URL + url
+            }
 
             const authToken = localStorage.getItem("authToken")  // get token from localStorage
             const requestHeaders = {
-                "Auth-Token": authToken,
+                "Auth-Token": authToken? authToken : "",
                 "Content-Type": 'application/json'
             }
 
-            const requestOptions = {
+            const requestOptions: RequestInit = {
                 method: method,
                 headers: requestHeaders,
-                credentials: 'include' as RequestCredentials,
+                credentials: 'include',
                 body: null as any
             };
             if (body) {
