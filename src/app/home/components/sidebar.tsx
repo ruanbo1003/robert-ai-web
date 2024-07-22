@@ -1,6 +1,6 @@
 'use client';
 
-import { BsPlus, BsFillLightningFill, BsGearFill, BsChatDotsFill, BsTranslate } from "react-icons/bs";
+import { BsPlus, BsFillLightningFill, BsGearFill, BsChatDotsFill, BsTranslate, BsBookmarks } from "react-icons/bs";
 import { FaHome, FaFire, FaPoo } from 'react-icons/fa';
 import { useCustomRedirect } from "@/app/components/RedirectTo"
 
@@ -28,6 +28,7 @@ export default function Sidebar() {
 
                 <SideBarIcon icon={<BsChatDotsFill size="20"/>} tips="chat" to="/home/ai/chat" />
                 <SideBarIcon icon={<BsTranslate size="20"/>} tips="translate" to="/home/ai/translate" />
+                <SideBarIcon icon={<BsBookmarks size="20"/>} tips="book marks" to="/home/link" />
             </div>
 
             {/*/ setting */}
