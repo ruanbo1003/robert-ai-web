@@ -9,34 +9,47 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useMutation } from "@tanstack/react-query"
 import { useFetchApi } from "@/hooks/api"
+import { toast } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function Page() {
     const [isAdding, setIsAdding ] = useState(false)
 
     const [activeClassify, setActiveClassify] = useState("")
-    const [bookmarkItems, setBookmarkItems] = useState<[BookmarkItem]>([])
+    const [bookmarkItems, setBookmarkItems] = useState<[BookmarkItem]>()
 
-    const { data: bookmarkList, isPending: isBookmarkListPending } = useFetchApi<BookmarkListResp>('bookmark-get-classify', BookmarkApi().GetBookmarks);
-    console.log('bookmarkList:', bookmarkList, typeof bookmarkList)
+    const { data: bookmarkList, isPending: isBookmarkListPending, refetch: refetchBookmarkList } = useFetchApi<BookmarkListResp>(
+        'bookmark-get-list',
+        BookmarkApi().GetBookmarks,
+    );
+    // console.log('bookmarkList:', bookmarkList, isBookmarkListPending)
 
     useEffect(() => {
+        console.log('use effect 0:', isBookmarkListPending)
+
         if(!activeClassify) {
             return
         }
-        setBookmarkItems(bookmarkList.bookmarks[activeClassify])
-    }, [activeClassify])
+        if (bookmarkList && !isBookmarkListPending) {
+            console.log('use effect 1:', bookmarkList.bookmarks)
+
+            setBookmarkItems(bookmarkList.bookmarks[activeClassify])
+        }
+    }, [activeClassify, isBookmarkListPending])
 
     useEffect(() => {
         if(!bookmarkList) {
             return
         }
 
-        setActiveClassify(bookmarkList.classify[0])
+        if(!activeClassify) {
+            setActiveClassify(bookmarkList.classify[0])
+        }
         // console.log('bookmarkList in useEffect:', bookmarkList.classify, bookmarkList.bookmarks)
     }, [bookmarkList])
 
-    const [bookMark, setBookMark] = useState<NewBookmarkItem>({
+    const [newBookmark, setNewBookmark] = useState<NewBookmarkItem>({
         classify: '',
         name: '',
         tips: '',
@@ -49,7 +62,8 @@ export default function Page() {
         },
         onSuccess: (data) => {
             console.log("addBookmarkFn success:", data)
-            setBookMark({classify: '', name: '', tips: '', url: ''})
+            setNewBookmark({classify: '', name: '', tips: '', url: ''})
+
         },
         onError: (error) => {
             console.log("addBookmarkFn error:", error)
@@ -59,15 +73,30 @@ export default function Page() {
     const handleAddBookmarkBtn = (e) => {
         e.preventDefault();
 
-        console.log(bookMark)
-        addBookmarkFn(bookMark)
+        if(!newBookmark.url.startsWith("http")) {
+            console.log(newBookmark.url)
+            toast.error(JSON.stringify("url should starts with http or https"), { position: 'top-center', autoClose: 1000})
+            return
+        }
+
+        if(newBookmark.classify.length < 2) {
+            toast.error(JSON.stringify("classify's length should > 4"), { position: 'top-center', autoClose: 1000})
+            return
+        }
+
+        if(newBookmark.name.length < 4) {
+            toast.error(JSON.stringify("name's length should > 4"), { position: 'top-center', autoClose: 1000})
+            return
+        }
+
+        addBookmarkFn(newBookmark)
     }
 
     return (
         <div id="link-page" className="flex flex-row w-full h-full">
             <div className="flex flex-col h-full bg-gray-100 w-24">
                 {
-                    !isBookmarkListPending && bookmarkList.classify.map((name) => (
+                    !isBookmarkListPending && bookmarkList && bookmarkList.classify.map((name) => (
                         <ClassifyMarkItem key={name} title={name} onItemClick={() => setActiveClassify(name)}
                                           isActive={name === activeClassify}/>
                     ))
@@ -82,7 +111,7 @@ export default function Page() {
                     <div
                         className="grid gap-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 justify-center items-center">
                         {
-                            !isBookmarkListPending && activeClassify && bookmarkItems.map((item: BookmarkItem, i) => (
+                            !isBookmarkListPending && activeClassify && bookmarkItems && bookmarkItems.map((item: BookmarkItem, i) => (
                                 <LinkItem key={i} title={item.name} tips={item.tips} link={item.url}/>
                             ))
                         }
@@ -96,26 +125,25 @@ export default function Page() {
                             <hr className="bg-slate-100 border border-blue-600 rounded-full"/>
 
                             <Label htmlFor="email">classify</Label>
-                            <Input type="email" id="classify" onChange={(e) => {
-                                bookMark.classify = e.target.value
+                            <Input type="email" id="classify" value={newBookmark.classify} onChange={(e) => {
+                                setNewBookmark((prevState) => ({...prevState, classify: e.target.value}))
                             }}/>
                             <Label htmlFor="email">name</Label>
-                            <Input type="email" id="name" onChange={(e) => {
-                                bookMark.name = e.target.value
+                            <Input type="email" id="name" value={newBookmark.name} onChange={(e) => {
+                                setNewBookmark((prevState) => ({...prevState, name: e.target.value}))
                             }}/>
                             <Label htmlFor="email">tips</Label>
-                            <Input type="email" id="tips" onChange={(e) => {
-                                bookMark.tips = e.target.value
+                            <Input type="email" id="tips" value={newBookmark.tips} onChange={(e) => {
+                                setNewBookmark((prevState) => ({...prevState, tips: e.target.value}))
                             }}/>
                             <Label htmlFor="email">url</Label>
-                            <Input type="email" id="url" onChange={(e) => {
-                                bookMark.url = e.target.value
+                            <Input type="email" id="url" value={newBookmark.url} onChange={(e) => {
+                                setNewBookmark((prevState) => ({...prevState, url: e.target.value}))
                             }}/>
                             <Button type="submit" className="bg-blue-600" onClick={handleAddBookmarkBtn}>Add</Button>
                         </div>
                     }
                 </div>
-
             </div>
         </div>
     )
@@ -145,7 +173,7 @@ function LinkItem(props: { title: any, tips: string, link: string }) {
             <div className="ml-2 mt-1 text-lg text-blue-600">
                 {title}
             </div>
-            <p className="ml-1 line-clamp-2 text-sm/normal">{tips}</p>
+            <p className="ml-2 line-clamp-2 text-sm/normal">{tips}</p>
         </div>
     )
 }

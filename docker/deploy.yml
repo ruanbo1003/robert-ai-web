@@ -1,0 +1,8 @@
+version: '3.9'
+
+services:
+  ai_web_prod:
+    image: registry.cn-heyuan.aliyuncs.com/ruanbo/ai-web:v0
+    restart: always
+    ports:
+      - "3000:3000"

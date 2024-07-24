@@ -19,7 +19,7 @@ export interface BookmarkItem {
 
 export interface BookmarkListResp {
     classify: [string],
-    bookmarks: Record<string, BookmarkItem>
+    bookmarks: Record<string, [BookmarkItem]>
 }
 
 

@@ -15,20 +15,18 @@ export default function Sidebar() {
 
             {/* menus */}
             <div className="mt-0">
-                <SideBarIcon icon={<FaHome size="28"/>} tips="home" to="/home" />
-
+                <SideBarIcon icon={<FaHome size="28"/>} tips="home" to="/home/dashboard" />
                 <hr className="bg-slate-100 border border-slate-400 rounded-full mx-2" />
 
-                <SideBarIcon icon={<FaFire size="28"/>} tips="fire"  to="/home" />
-                <SideBarIcon icon={<BsPlus size="32"/>} tips="plus" to="/home"/>
-                <SideBarIcon icon={<BsFillLightningFill size="20" />} tips="lightning" to="/home" />
-                <SideBarIcon icon={<FaPoo size="20"/>} tips="shit" to="/home" />
+                {/*<SideBarIcon icon={<FaFire size="28"/>} tips="fire"  to="/home" />*/}
+                {/*<SideBarIcon icon={<BsPlus size="32"/>} tips="plus" to="/home"/>*/}
+                {/*<SideBarIcon icon={<BsFillLightningFill size="20" />} tips="lightning" to="/home" />*/}
+                {/*<SideBarIcon icon={<FaPoo size="20"/>} tips="shit" to="/home" />*/}
+                {/*<hr className="bg-slate-100 border border-slate-400 rounded-full mx-2" />*/}
 
-                <hr className="bg-slate-100 border border-slate-400 rounded-full mx-2" />
-
-                <SideBarIcon icon={<BsChatDotsFill size="20"/>} tips="chat" to="/home/ai/chat" />
+                {/*<SideBarIcon icon={<BsChatDotsFill size="20"/>} tips="chat" to="/home/ai/chat" />*/}
                 <SideBarIcon icon={<BsTranslate size="20"/>} tips="translate" to="/home/ai/translate" />
-                <SideBarIcon icon={<BsBookmarks size="20"/>} tips="book marks" to="/home/link" />
+                <SideBarIcon icon={<BsBookmarks size="20"/>} tips="book marks" to="/home/bookmark" />
             </div>
 
             {/*/ setting */}
