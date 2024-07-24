@@ -35,7 +35,7 @@ export default function Page() {
         },
         onSuccess: (data: LoginResp) => {
             localStorage.setItem("authToken", data.token)
-            redirectTo('/home');
+            redirectTo('/home/dashboard');
             // toast.success("login success:" + data.token, {position: 'top-center', autoClose: 1000})
         },
         onError: (error) => {
@@ -68,7 +68,7 @@ export default function Page() {
                         {/* form */}
                         <div className="mt-20">
                             <h2 className="font-bold text-2xl text-blue-500">Login</h2>
-                            <label className="inline relative">If you already a member, easily log in.</label>
+                            <label className="inline relative">login or try with <a className="text-blue-600">guest / xyz321</a>.</label>
 
                             <form action="" className="flex flex-col gap-4">
                                 <div className="relative mt-8">
@@ -82,13 +82,13 @@ export default function Page() {
                                 <span className="absolute inset-y-0 left-0 flex items-center pl-2">
                                     <LockKeyhole className="ml-1"/>
                                 </span>
-                                    <Input type="text" className="w-full pl-10 rounded-xl border bg-white"
+                                    <Input type="password" className="w-full pl-10 rounded-xl border bg-white"
                                            name="password"
                                            placeholder="Password" onChange={passwordValueChange}>
                                     </Input>
                                 </div>
                                 <button onClick={handleLoginBtn}
-                                    className="bg-blue-600 text-white rounded-lg py-2 hover:scale-105 duration-300">Login
+                                        className="bg-blue-600 text-white rounded-lg py-2 hover:scale-105 duration-300">Login
                                 </button>
                             </form>
 

@@ -10,17 +10,24 @@ export default function HomeLayout({
     children: React.ReactNode
 }) {
     return (
-        <div className="flex flex-row w-full h-full">
-            <div className="">
+        <div id="home" className="flex flex-row w-full h-full">
+            <div id="home-left-sidebar" className="">
                 <Sidebar />
             </div>
-            <div className="w-full">
-                <div className="flex flex-col justify-start text-center">
+            <div id="home-right" className="w-full h-full">
+                <div id="home-right-top-nav">
                     <TopNavBar/>
-                    <div className="w-full h-3/4">
-                        {children}
-                    </div>
                 </div>
+                <div id="home-right-main-content" className="w-full" style={{ height: 'calc(100vh - 60px)' }}>
+                    {children}
+                </div>
+
+                {/*<div className="flex flex-col justify-start text-center">*/}
+                {/*    <TopNavBar/>*/}
+                {/*    <div className="w-full h-full">*/}
+                {/*        {children}*/}
+                {/*    </div>*/}
+                {/*</div>*/}
             </div>
         </div>
     )

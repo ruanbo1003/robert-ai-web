@@ -1,7 +1,8 @@
 'use client';
 
-import { BsPlus, BsFillLightningFill, BsGearFill, BsChatDotsFill, BsTranslate } from "react-icons/bs";
+import { BsPlus, BsFillLightningFill, BsGearFill, BsChatDotsFill, BsTranslate, BsBookmarks } from "react-icons/bs";
 import { FaHome, FaFire, FaPoo } from 'react-icons/fa';
+import { useCustomRedirect } from "@/app/components/RedirectTo"
 
 
 export default function Sidebar() {
@@ -14,38 +15,43 @@ export default function Sidebar() {
 
             {/* menus */}
             <div className="mt-0">
-                <SideBarIcon icon={<FaHome size="28"/>} tips="home"/>
-
-                <hr className="bg-slate-100 border border-slate-400 rounded-full mx-2"/>
-
-                <SideBarIcon icon={<FaFire size="28"/>} tips="fire"/>
-                <SideBarIcon icon={<BsPlus size="32"/>} tips="plus"/>
-                <SideBarIcon icon={<BsFillLightningFill size="20"/>} tips="lightning"/>
-                <SideBarIcon icon={<FaPoo size="20"/>} tips="shit"/>
-
+                <SideBarIcon icon={<FaHome size="28"/>} tips="home" to="/home/dashboard" />
                 <hr className="bg-slate-100 border border-slate-400 rounded-full mx-2" />
 
-                <SideBarIcon icon={<BsChatDotsFill size="20"/>} tips="chat"/>
-                <SideBarIcon icon={<BsTranslate size="20"/>} tips="translate"/>
+                {/*<SideBarIcon icon={<FaFire size="28"/>} tips="fire"  to="/home" />*/}
+                {/*<SideBarIcon icon={<BsPlus size="32"/>} tips="plus" to="/home"/>*/}
+                {/*<SideBarIcon icon={<BsFillLightningFill size="20" />} tips="lightning" to="/home" />*/}
+                {/*<SideBarIcon icon={<FaPoo size="20"/>} tips="shit" to="/home" />*/}
+                {/*<hr className="bg-slate-100 border border-slate-400 rounded-full mx-2" />*/}
+
+                {/*<SideBarIcon icon={<BsChatDotsFill size="20"/>} tips="chat" to="/home/ai/chat" />*/}
+                <SideBarIcon icon={<BsTranslate size="20"/>} tips="translate" to="/home/ai/translate" />
+                <SideBarIcon icon={<BsBookmarks size="20"/>} tips="book marks" to="/home/bookmark" />
             </div>
 
             {/*/ setting */}
             <div className="bottom-0">
                 <hr className="bg-slate-100 border border-slate-400 rounded-full mx-2 my-2" />
-                <SideBarIcon icon={<BsGearFill size="20"/>} tips="setting"/>
+                <SideBarIcon icon={<BsGearFill size="20"/>} tips="setting"  to="/home"/>
             </div>
 
         </div>
     )
 }
 
-// class SideBarIcon extends Component<{ icon: any, tips: string }> {
-function SideBarIcon(props: { icon: any, tips: string }) {
+
+function SideBarIcon(props: { icon: any, tips: string, to: string }) {
     const icon = props.icon
     const tips = props.tips
+    const toPath = props.to
+
+    const { redirectTo } = useCustomRedirect();
+    const handleClick = () => {
+        redirectTo(toPath);
+    };
 
     return (
-        <div className="relative flex items-center justify-center left-0 h-10 w-10 mt-4 mb-4 mx-auto shadow-lg bg-slate-500
+        <div onClick={ handleClick } className="relative flex items-center justify-center left-0 h-10 w-10 mt-4 mb-4 mx-auto shadow-lg bg-slate-500
                             text-white text-6xl hover:bg-slate-600 hover:text-blue-500 rounded-3xl hover:rounded-xl transition-all duration-300
                             ease-linear group">
             {icon}
@@ -56,5 +62,3 @@ function SideBarIcon(props: { icon: any, tips: string }) {
         </div>
     )
 }
-
-// Why the Button go does not at the bottom of the sidebar.

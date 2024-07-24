@@ -101,12 +101,12 @@ export default function Page() {
                                 <input type="text" className="p-2 mt-8 rounded-xl border" name="username"
                                        placeholder="Username" onChange={nameValueChange}></input>
                                 <div className="relative">
-                                    <input type="text" className="w-full p-2 rounded-xl border" name="password"
+                                    <input type="password" className="w-full p-2 rounded-xl border" name="password"
                                            placeholder="password" onChange={passwordValueChange}>
                                     </input>
                                 </div>
                                 <div className="relative">
-                                    <input type="text" className="w-full p-2 rounded-xl border" name="password2"
+                                    <input type="password" className="w-full p-2 rounded-xl border" name="password2"
                                            placeholder="repeat password" onChange={password2ValueChange}>
                                     </input>
                                 </div>
