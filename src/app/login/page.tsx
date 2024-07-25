@@ -8,9 +8,12 @@ import { useCustomRedirect } from "@/app/components/RedirectTo"
 import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
 import { UserApi, LoginReq, LoginResp } from "@/api/user"
+import useUserStore from "@/store/user"
 
 
 export default function Page() {
+    const { setName: setLoginUserName } = useUserStore()
+
     const { redirectTo } = useCustomRedirect();
     const handleSignupBtn = () => {
         redirectTo('/signup');
@@ -35,6 +38,7 @@ export default function Page() {
         },
         onSuccess: (data: LoginResp) => {
             localStorage.setItem("authToken", data.token)
+            setLoginUserName(loginData.name)
             redirectTo('/home/dashboard');
             // toast.success("login success:" + data.token, {position: 'top-center', autoClose: 1000})
         },
