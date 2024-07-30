@@ -23,7 +23,7 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN npm install -g pnpm
+RUN corepack enable pnpm
 RUN rm -rf .env.local && cp .env.prod .evn.local
 RUN pnpm build
 

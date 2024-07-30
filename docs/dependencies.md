@@ -8,7 +8,7 @@ pnpm add @tanstack/react-query axios react-toastify
 
 * lucide-react icon
 ```shell
-pnpm add lucide-react zustand
+pnpm add lucide-react zustand react-player
 ```
 
 * shadcn-ui
@@ -18,7 +18,7 @@ pnpm add lucide-react zustand
     ```
   * add ui components, this will create the src/components/ui folder
     ```shell
-    pnpm dlx shadcn-ui@latest add button input label checkbox avatar dropdown-menu textarea card form
+    pnpm dlx shadcn-ui@latest add button input label checkbox avatar dropdown-menu textarea card form pro slider
     ```
 
 
