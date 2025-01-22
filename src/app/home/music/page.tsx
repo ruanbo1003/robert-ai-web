@@ -5,11 +5,14 @@ import { Slider } from "@/app/components/player-slider"
 
 import { CiPlay1, CiStop1 } from "react-icons/ci"
 import { IoPlaySkipForward, IoPlaySkipBack } from "react-icons/io5";
-import ReactPlayer from 'react-player'
+// import ReactPlayer from 'react-player'
 import { useState } from "react"
+import dynamic from "next/dynamic"
 
 
 export default function Page() {
+    const ReactPlayer = dynamic(() => import('react-player/lazy'), { ssr: false });
+
     const [isPlay, setIsPlay] = useState(false);
 
     const handlePlayBtn = (event) => {
@@ -19,7 +22,7 @@ export default function Page() {
     }
 
     return (
-        <div id="music" className="flex h-full w-full justify-center items-center">
+        <div id="music" className="flex flex-col h-full w-full justify-center items-center">
             <div id="music-player" className="flex flex-row w-2/3 min-w-96 max-w-xl h-32 bg-gray-100 rounded-lg">
                 <div className=" h-full">
                     <img id="music-image" src="/music.png" alt="music-image" className="w-full h-full object-cover rounded-lg">
@@ -39,14 +42,13 @@ export default function Page() {
 
                             <IoPlaySkipForward className="text-2xl hover:cursor-pointer hover:scale-105" />
 
-
                         </div>
                     </div>
 
                 </div>
             </div>
-            <div id="react-player">
-                <ReactPlayer url='https://www.youtube.com/watch?v=BNB9mkO0sOw'/>
+            <div id="react-player" className="h-32 w-full">
+                <ReactPlayer width="100%" controls={true} style={{ display: 'none' }} volume={0} url='/musics/take me to your heart.mp3'/>
             </div>
         </div>
 
