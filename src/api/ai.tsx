@@ -15,11 +15,13 @@ export function AiApi() {
         Translate,
     }
 
-    function Translate(content: string) {
+    function Translate(model: string, content: string) {
         const payload: AiTranslateReq = {
-            model: "",
+            model: model,
             content: content
         }
+        console.log("payload:", payload)
+
         return FetchApi().post('/api/ai/translate', payload)
     }
 

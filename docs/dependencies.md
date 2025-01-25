@@ -18,8 +18,9 @@ pnpm add lucide-react zustand react-player
     ```
   * add ui components, this will create the src/components/ui folder
     ```shell
-    pnpm dlx shadcn-ui@latest add button input label checkbox avatar dropdown-menu textarea card form pro slider
+    pnpm dlx shadcn@latest add tabs button input label checkbox avatar dropdown-menu textarea card form pro slider tabs
     ```
+
 
 
 
